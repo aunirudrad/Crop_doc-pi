@@ -3,13 +3,12 @@ from PIL import Image
 import tensorflow as tf
 import numpy as np
 import streamlit as st
-import request
 
 # Load the TFLite models
 model_paths = {
-    'mango': 'https://drive.google.com/uc?export=1Ag9othRVtRukNEpLZdH4MVdr6gK1tvVT',
-    'soybean': 'https://drive.google.com/uc?export=1h904aqG4kvafUDU-OjsPCizZE-ZfWajo',
-    'potato': 'https://drive.google.com/uc?export=1Q3ipq0ywKlUfNK6Ku5-uXj_34ksZxa1a'
+    'mango': 'https://drive.google.com/uc?export=download&id=1Ag9othRVtRukNEpLZdH4MVdr6gK1tvVT',
+    'soybean': 'https://drive.google.com/uc?export=download&id=1h904aqG4kvafUDU-OjsPCizZE-ZfWajo',
+    'potato': 'https://drive.google.com/uc?export=download&id=1Q3ipq0ywKlUfNK6Ku5-uXj_34ksZxa1a'
 }
 interpreters = {}
 for crop, path in model_paths.items():
