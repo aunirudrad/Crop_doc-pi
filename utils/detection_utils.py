@@ -3,6 +3,7 @@ from PIL import Image
 import tensorflow as tf
 import numpy as np
 import streamlit as st
+import request
 
 # Load the TFLite models
 model_paths = {
