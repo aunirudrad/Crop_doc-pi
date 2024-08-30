@@ -3,6 +3,14 @@ from PIL import Image
 import tensorflow as tf
 import numpy as np
 import streamlit as st
+import gdown
+
+# Define the file IDs for each model
+file_ids = {
+    'mango': '1Ag9othRVtRukNEpLZdH4MVdr6gK1tvVT',     # Replace with the actual Google Drive file ID for mango_model.tflite
+    'soybean': '1h904aqG4kvafUDU-OjsPCizZE-ZfWajo', # Replace with the actual Google Drive file ID for soybean_model.tflite
+    'potato': '1Ag9othRVtRukNEpLZdH4MVdr6gK1tvVT'    # Replace with the actual Google Drive file ID for potato_model.tflite
+}
 
 
 # Load the TFLite models
