@@ -3,7 +3,7 @@ import streamlit as st
 
 def home_page(navigate):
     st.write("<div class='title'>Hawkeye ~ Eagle</div>", unsafe_allow_html=True)
-    st.write("<div class='sub-title'>Click to Detect (রোগ জানাতে ট্যাপ করুন)</div>", unsafe_allow_html=True)
+    st.write("<div class='sub-title'>Click to Detect (রোগ জানতে ট্যাপ করুন)</div>", unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
     with col1:
