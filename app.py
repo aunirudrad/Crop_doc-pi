@@ -6,7 +6,12 @@ from pages.detection import detection_page
 from utils.styles import set_styles
 
 # Set up page configuration
-st.set_page_config(page_title="Disease Detection", layout="centered")
+st.set_page_config(
+    page_title="Hawkeye-Eagle",
+    page_icon="🌿",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # Apply custom styles
 st.markdown(set_styles(), unsafe_allow_html=True)
