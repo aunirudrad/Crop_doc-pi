@@ -20,6 +20,12 @@ model_paths = {
     'potato': 'potato_model.tflite'
 }
 
+# Download each file
+for key in model_paths:
+    url = f"https://drive.google.com/uc?id={file_ids[key]}"
+    output = model_paths[key]
+    gdown.download(url, output, quiet=False)
+
 interpreters = {}
 for crop, path in model_paths.items():
     interpreter = tf.lite.Interpreter(model_path=path)
