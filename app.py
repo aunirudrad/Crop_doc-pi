@@ -1,9 +1,5 @@
 # app.py
 import streamlit as st
-from pages.home import home_page
-from pages.camera import camera_page
-from pages.detection import detection_page
-from utils.styles import set_styles
 
 # Set up page configuration
 st.set_page_config(
@@ -12,6 +8,13 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+from pages.home import home_page
+from pages.camera import camera_page
+from pages.detection import detection_page
+from utils.styles import set_styles
+
+
 
 # Apply custom styles
 st.markdown(set_styles(), unsafe_allow_html=True)
