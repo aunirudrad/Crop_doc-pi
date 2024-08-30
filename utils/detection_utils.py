@@ -6,9 +6,9 @@ import streamlit as st
 
 # Load the TFLite models
 model_paths = {
-    'mango': 'https://drive.google.com/file/d/1Ag9othRVtRukNEpLZdH4MVdr6gK1tvVT/view?usp=drive_link',
-    'soybean': 'https://drive.google.com/file/d/1h904aqG4kvafUDU-OjsPCizZE-ZfWajo/view?usp=drive_link',
-    'potato': 'https://drive.google.com/file/d/1Q3ipq0ywKlUfNK6Ku5-uXj_34ksZxa1a/view?usp=drive_link'
+    'mango': 'https://drive.google.com/uc?export=1Ag9othRVtRukNEpLZdH4MVdr6gK1tvVT',
+    'soybean': 'https://drive.google.com/uc?export=1h904aqG4kvafUDU-OjsPCizZE-ZfWajo',
+    'potato': 'https://drive.google.com/uc?export=1Q3ipq0ywKlUfNK6Ku5-uXj_34ksZxa1a'
 }
 interpreters = {}
 for crop, path in model_paths.items():
