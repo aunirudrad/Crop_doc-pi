@@ -3,7 +3,7 @@ import streamlit as st
 # Set up page configuration
 st.set_page_config(
     page_title="Hawkeye-Eagle",
-    page_icon="🌿",
+    page_icon="icon.png",
     layout="wide",
     initial_sidebar_state="expanded"
 ) 
