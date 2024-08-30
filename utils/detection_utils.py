@@ -3,6 +3,7 @@ from PIL import Image
 import tensorflow as tf
 import numpy as np
 import streamlit as st
+import requests
 
 # Load the TFLite models
 model_paths = {
@@ -10,6 +11,8 @@ model_paths = {
     'soybean': 'https://drive.google.com/uc?export=download&id=1h904aqG4kvafUDU-OjsPCizZE-ZfWajo',
     'potato': 'https://drive.google.com/uc?export=download&id=1Q3ipq0ywKlUfNK6Ku5-uXj_34ksZxa1a'
 }
+response = requests.get(model_paths)
+
 interpreters = {}
 for crop, path in model_paths.items():
     interpreter = tf.lite.Interpreter(model_path=path)
