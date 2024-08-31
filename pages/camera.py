@@ -26,29 +26,38 @@ def camera_page(navigate):
     col1, col2 = st.columns(2)
 
     with col1:
-# Display instructions
+        # Display instructions
         st.markdown("""
             <div style='text-align: center; font-weight: bold; font-size: 20px;'>Capture Image (ছবি তুলুন)</div>
             <div style='text-align: center;'>Click the button below to capture an image with the camera.</div>
             <div style='text-align: center;'>ক্যামেরা চালু করতে "Open Camera" বাটনে ক্লিক করুন</div>
         """, unsafe_allow_html=True)
         
-        # Display a button to open the camera
+        # Initialize a variable to control the camera stream
+        if "camera_open" not in st.session_state:
+            st.session_state.camera_open = False
+        
         if st.button("Open Camera", key="capture"):
-            # Create a video capture instance
+            st.session_state.camera_open = not st.session_state.camera_open
+        
+        if st.session_state.camera_open:
             webrtc_ctx = webrtc_streamer(
                 key="example",
-                video_transformer_factory=VideoTransformer
+                video_transformer_factory=VideoTransformer,
+                async_transform=False,
+                media_stream_constraints={"video": True}
             )
             
-            # Capture image when the button is clicked
             if webrtc_ctx.video_transformer:
                 captured_image = webrtc_ctx.video_transformer.get_image()
                 if captured_image:
                     st.session_state["captured_image"] = captured_image
                     st.image(captured_image, caption="Captured Image")
                     st.write("Image captured!")
-
+                else:
+                    st.write("No image captured yet.")
+        else:
+            st.write("Camera is closed. Click 'Open Camera' to start.")
     with col2:
         st.markdown("""
             <div style='text-align: center; font-weight: bold; font-size: 20px;'>Upload Image (ছবি আপলোড করুন)</div>
