@@ -1,6 +1,22 @@
 # pages/camera.py
 import streamlit as st
+from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
+import numpy as np
+import cv2
 from PIL import Image
+
+class VideoTransformer(VideoTransformerBase):
+    def __init__(self):
+        self.frame = None
+
+    def transform(self, frame):
+        self.frame = frame.to_ndarray(format="bgr24")
+        return self.frame
+
+    def get_image(self):
+        if self.frame is not None:
+            return Image.fromarray(self.frame)
+        return None
 
 def camera_page(navigate):
     st.write(f"<div class='title'>{st.session_state.get('crop', 'Camera')}</div>", unsafe_allow_html=True)
@@ -10,18 +26,28 @@ def camera_page(navigate):
     col1, col2 = st.columns(2)
 
     with col1:
+# Display instructions
         st.markdown("""
             <div style='text-align: center; font-weight: bold; font-size: 20px;'>Capture Image (ছবি তুলুন)</div>
             <div style='text-align: center;'>Click the button below to capture an image with the camera.</div>
             <div style='text-align: center;'>ক্যামেরা চালু করতে "Open Camera" বাটনে ক্লিক করুন</div>
         """, unsafe_allow_html=True)
+        
+        # Display a button to open the camera
         if st.button("Open Camera", key="capture"):
-            captured_image = Image.new('RGB', (300, 300), color='gray')
-            st.session_state["captured_image"] = captured_image
-            st.image(captured_image, caption="Open Image")
-            st.write("Image captured!")  
-        if st.button("Back (পিছনে ফিরে যান)"):
-            navigate("home")
+            # Create a video capture instance
+            webrtc_ctx = webrtc_streamer(
+                key="example",
+                video_transformer_factory=VideoTransformer
+            )
+            
+            # Capture image when the button is clicked
+            if webrtc_ctx.video_transformer:
+                captured_image = webrtc_ctx.video_transformer.get_image()
+                if captured_image:
+                    st.session_state["captured_image"] = captured_image
+                    st.image(captured_image, caption="Captured Image")
+                    st.write("Image captured!")
 
     with col2:
         st.markdown("""
