@@ -9,7 +9,7 @@ import gdown
 file_ids = {
     'mango': '1Ag9othRVtRukNEpLZdH4MVdr6gK1tvVT',     # Replace with the actual Google Drive file ID for mango_model.tflite
     'soybean': '1h904aqG4kvafUDU-OjsPCizZE-ZfWajo', # Replace with the actual Google Drive file ID for soybean_model.tflite
-    'potato': '1Ag9othRVtRukNEpLZdH4MVdr6gK1tvVT'    # Replace with the actual Google Drive file ID for potato_model.tflite
+    'potato': '1Q3ipq0ywKlUfNK6Ku5-uXj_34ksZxa1a'    # Replace with the actual Google Drive file ID for potato_model.tflite
 }
 
 
