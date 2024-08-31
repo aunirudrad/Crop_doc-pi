@@ -26,18 +26,21 @@ def camera_page(navigate):
     col1, col2 = st.columns(2)
 
     with col1:
-        # Display instructions
         st.markdown("""
             <div style='text-align: center; font-weight: bold; font-size: 20px;'>Capture Image (ছবি তুলুন)</div>
-            <div style='text-align: center;'>Click the button below to capture an image with the camera.</div>
-            <div style='text-align: center;'>ক্যামেরা চালু করতে "Open Camera" বাটনে ক্লিক করুন</div>
+            <div style='text-align: center;'>Click the button below to open the camera and capture an image.</div>
+            <div style='text-align: center;'>ক্যামেরা চালু করতে "Open Camera" বাটনে ক্লিক করুন এবং ছবি তুলতে "Capture Image" বাটনে ক্লিক করুন</div>
         """, unsafe_allow_html=True)
         
-        # Initialize a variable to control the camera stream
+        # Initialize variables to control camera and image capture
         if "camera_open" not in st.session_state:
             st.session_state.camera_open = False
         
-        if st.button("Open Camera", key="capture"):
+        if "captured_image" not in st.session_state:
+            st.session_state.captured_image = None
+        
+        # Button to open/close the camera
+        if st.button("Open Camera", key="open_camera"):
             st.session_state.camera_open = not st.session_state.camera_open
         
         if st.session_state.camera_open:
@@ -47,15 +50,17 @@ def camera_page(navigate):
                 async_transform=False,
                 media_stream_constraints={"video": True}
             )
-            
-            if webrtc_ctx.video_transformer:
-                captured_image = webrtc_ctx.video_transformer.get_image()
-                if captured_image:
-                    st.session_state["captured_image"] = captured_image
-                    st.image(captured_image, caption="Captured Image")
-                    st.write("Image captured!")
-                else:
-                    st.write("No image captured yet.")
+        
+            # Button to capture the image
+            if st.button("Capture Image", key="capture_image"):
+                if webrtc_ctx.video_transformer:
+                    captured_image = webrtc_ctx.video_transformer.get_image()
+                    if captured_image:
+                        st.session_state.captured_image = captured_image
+                        st.image(captured_image, caption="Captured Image")
+                        st.write("Image captured!")
+                    else:
+                        st.write("No image captured yet.")
         else:
             st.write("Camera is closed. Click 'Open Camera' to start.")
     with col2:
