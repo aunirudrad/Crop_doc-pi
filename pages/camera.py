@@ -99,5 +99,5 @@ def camera_page(navigate):
             else:
                 st.write("No image captured or uploaded to process!")
 
-# Example of calling the camera_page function
-camera_page(navigate=lambda x: st.write(f"Navigation placeholder: {x}"))
+# # Example of calling the camera_page function
+# camera_page(navigate=lambda x: st.write(f"Navigation placeholder: {x}"))
