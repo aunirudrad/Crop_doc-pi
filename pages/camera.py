@@ -8,25 +8,12 @@ from time import sleep
 from picamera2 import Picamera2, Preview
 
 
-class VideoTransformer(VideoTransformerBase):
-    def __init__(self):
-        self.frame = None
-
-    def transform(self, frame):
-        self.frame = frame.to_ndarray(format="bgr24")
-        return self.frame
-
-    def get_image(self):
-        if self.frame is not None:
-            return Image.fromarray(self.frame)
-        return None
-
-def camera_page(navigate):
+def camera_page(navigate, picam2):
     st.write(f"<div class='title'>{st.session_state.get('crop', 'Camera')}</div>", unsafe_allow_html=True)
     st.write("<div class='sub-title'>Capture or Upload Image</div>", unsafe_allow_html=True)
     st.write("<div class='sub-title'>(ছবি তুলুন বা একটি ছবি আপলোড করুন)</div>", unsafe_allow_html=True)
 
-    picam2 = Picamera2()
+    
 
     col1, col2 = st.columns(2)
     
