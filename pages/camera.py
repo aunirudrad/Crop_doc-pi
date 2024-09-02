@@ -26,7 +26,6 @@ def camera_page(navigate):
         st.session_state.captured_image = None
 
     col1, col2 = st.columns(2)
-
     with col1:
         st.markdown("""
             <div style='text-align: center; font-weight: bold; font-size: 20px;'>Capture Image (ছবি তুলুন)</div>
@@ -44,14 +43,17 @@ def camera_page(navigate):
         if st.session_state.camera_open:
             if st.button("Capture Image", key="capture_image"):
                 if st.session_state.picam2:
-                    image_array = st.session_state.picam2.capture_array()
-                    captured_image = Image.fromarray(image_array)
-                    st.session_state.captured_image = captured_image
-                    st.image(captured_image, caption="Image captured", use_column_width=True)
-                    st.session_state.picam2.stop()
-                    st.session_state.picam2.close()
-                    st.session_state.camera_open = False
-
+                    try:
+                        image_array = st.session_state.picam2.capture_array()
+                        captured_image = Image.fromarray(image_array)
+                        st.session_state.captured_image = captured_image
+                        st.image(captured_image, caption="Image captured", use_column_width=True)
+                    except Exception as e:
+                        st.error(f"Error capturing image: {e}")
+                    finally:
+                        st.session_state.picam2.stop()
+                        st.session_state.picam2.close()
+                        st.session_state.camera_open = False
     with col2:
         st.markdown("""
             <div style='text-align: center; font-weight: bold; font-size: 20px;'>Upload Image (ছবি আপলোড করুন)</div>
