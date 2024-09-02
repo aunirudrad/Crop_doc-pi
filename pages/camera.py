@@ -10,7 +10,7 @@ def initialize_camera():
     still_config = picam2.create_still_configuration()  # Create a configuration for still capture
     picam2.configure(still_config)  # Apply the still configuration
     picam2.start()  # Start the camera
-    sleep(2)  # Allow time for the camera to warm up
+    sleep(100)  # Allow time for the camera to warm up
     return picam2
 
 def camera_page(navigate):
