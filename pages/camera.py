@@ -1,22 +1,23 @@
-# pages/camera.py
 import streamlit as st
 from PIL import Image
 from time import sleep
 from picamera2 import Picamera2
 
 def initialize_camera():
-    # Initialize the Picamera2 object and configure it for still capture
-    picam2 = Picamera2()
-    still_config = picam2.create_still_configuration()  # Create a configuration for still capture
-    picam2.configure(still_config)  # Apply the still configuration
-    picam2.start()  # Start the camera
-    sleep(100)  # Allow time for the camera to warm up
-    return picam2
+    try:
+        picam2 = Picamera2()
+        still_config = picam2.create_still_configuration()
+        picam2.configure(still_config)
+        picam2.start()
+        sleep(2)
+        return picam2
+    except RuntimeError as e:
+        st.error(f"Failed to initialize the camera: {e}")
+        return None
 
 def camera_page(navigate):
     st.title("Camera Page")
 
-    # Initialize session states if not already done
     if "camera_open" not in st.session_state:
         st.session_state.camera_open = False
     if "picam2" not in st.session_state:
@@ -36,20 +37,17 @@ def camera_page(navigate):
         # Button to open the camera
         if st.button("Open Camera", key="open_camera"):
             if not st.session_state.camera_open:
-                st.session_state.picam2 = initialize_camera()  # Initialize and start the camera
-                st.session_state.camera_open = True
+                st.session_state.picam2 = initialize_camera()
+                if st.session_state.picam2 is not None:
+                    st.session_state.camera_open = True
 
-        # If the camera is open, display a capture button
         if st.session_state.camera_open:
             if st.button("Capture Image", key="capture_image"):
                 if st.session_state.picam2:
-                    # Capture the image
                     image_array = st.session_state.picam2.capture_array()
                     captured_image = Image.fromarray(image_array)
                     st.session_state.captured_image = captured_image
-                    # Display the captured image
                     st.image(captured_image, caption="Image captured", use_column_width=True)
-                    # Stop the camera
                     st.session_state.picam2.stop()
                     st.session_state.picam2.close()
                     st.session_state.camera_open = False
