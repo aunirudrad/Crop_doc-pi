@@ -4,8 +4,9 @@ from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
 import numpy as np
 import cv2
 from PIL import Image
-from picamera2 import PiCamera2
 from time import sleep
+from picamera2 import Picamera2, Preview
+
 
 class VideoTransformer(VideoTransformerBase):
     def __init__(self):
@@ -24,9 +25,7 @@ def camera_page(navigate):
     st.write(f"<div class='title'>{st.session_state.get('crop', 'Camera')}</div>", unsafe_allow_html=True)
     st.write("<div class='sub-title'>Capture or Upload Image</div>", unsafe_allow_html=True)
     st.write("<div class='sub-title'>(ছবি তুলুন বা একটি ছবি আপলোড করুন)</div>", unsafe_allow_html=True)
-    camera = PiCamera2()
-    
-    sleep(2)
+
     col1, col2 = st.columns(2)
 
     with col1:
@@ -45,21 +44,21 @@ def camera_page(navigate):
         
         # Button to open/close the camera
         if st.button("Open Camera", key="open_camera"):
-            camera.start_preview()
-            sleep(2)
+            picam2 = Picamera2()
+            picam2.start_preview(Preview.QTGL)
+            sleep(100)
+            
             # Button to capture the image
             if st.button("Capture Image", key="capture_image"):
-        #         if webrtc_ctx.video_transformer:
-        #             captured_image = webrtc_ctx.video_transformer.get_image()
-        #             if captured_image:
-        #                 st.session_state.captured_image = captured_image
-        #                 st.image(captured_image, caption="Captured Image")
-        #                 st.write("Image captured!")
-        #             else:
-        #                 st.write("No image captured yet.")
-        # else:
-        #     st.write("Camera is closed. Click 'Open Camera' to start.")
-                pass
+
+                capture_image = picam2.capture_image()
+                st.image(capture_image, caption="Image captured")
+                picam2.stop_preview()
+                picam2.close()
+                
+    
+    
+    
     with col2:
         st.markdown("""
             <div style='text-align: center; font-weight: bold; font-size: 20px;'>Upload Image (ছবি আপলোড করুন)</div>
