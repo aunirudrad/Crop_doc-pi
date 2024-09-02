@@ -12,7 +12,12 @@ def camera_page(navigate):
     st.write(f"<div class='title'>{st.session_state.get('crop', 'Camera')}</div>", unsafe_allow_html=True)
     st.write("<div class='sub-title'>Capture or Upload Image</div>", unsafe_allow_html=True)
     st.write("<div class='sub-title'>(ছবি তুলুন বা একটি ছবি আপলোড করুন)</div>", unsafe_allow_html=True)
+    # Initialize the camera instance only if the camera is open
+    if "camera_open" not in st.session_state:
+        st.session_state.camera_open = False
 
+    if "captured_image" not in st.session_state:
+        st.session_state.captured_image = None
     
 
     col1, col2 = st.columns(2)
@@ -24,13 +29,6 @@ def camera_page(navigate):
             <div style='text-align: center;'>Click the button below to open the camera and capture an image.</div>
             <div style='text-align: center;'>ক্যামেরা চালু করতে "Open Camera" বাটনে ক্লিক করুন এবং ছবি তুলতে "Capture Image" বাটনে ক্লিক করুন</div>
         """, unsafe_allow_html=True)
-        
-        # Initialize variables to control camera and image capture
-        if "camera_open" not in st.session_state:
-            st.session_state.camera_open = False
-        
-        if "captured_image" not in st.session_state:
-            st.session_state.captured_image = None
         
         # Button to open/close the camera
         if st.button("Open Camera", key="open_camera"):
