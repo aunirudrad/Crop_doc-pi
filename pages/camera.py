@@ -26,7 +26,10 @@ def camera_page(navigate):
     st.write("<div class='sub-title'>Capture or Upload Image</div>", unsafe_allow_html=True)
     st.write("<div class='sub-title'>(ছবি তুলুন বা একটি ছবি আপলোড করুন)</div>", unsafe_allow_html=True)
 
+    picam2 = Picamera2()
+
     col1, col2 = st.columns(2)
+    
 
     with col1:
         st.markdown("""
@@ -44,7 +47,6 @@ def camera_page(navigate):
         
         # Button to open/close the camera
         if st.button("Open Camera", key="open_camera"):
-            picam2 = Picamera2()
             picam2.start_preview(Preview.QTGL)
             sleep(100)
             
