@@ -49,16 +49,17 @@ def camera_page(navigate):
             sleep(2)
             # Button to capture the image
             if st.button("Capture Image", key="capture_image"):
-                if webrtc_ctx.video_transformer:
-                    captured_image = webrtc_ctx.video_transformer.get_image()
-                    if captured_image:
-                        st.session_state.captured_image = captured_image
-                        st.image(captured_image, caption="Captured Image")
-                        st.write("Image captured!")
-                    else:
-                        st.write("No image captured yet.")
-        else:
-            st.write("Camera is closed. Click 'Open Camera' to start.")
+        #         if webrtc_ctx.video_transformer:
+        #             captured_image = webrtc_ctx.video_transformer.get_image()
+        #             if captured_image:
+        #                 st.session_state.captured_image = captured_image
+        #                 st.image(captured_image, caption="Captured Image")
+        #                 st.write("Image captured!")
+        #             else:
+        #                 st.write("No image captured yet.")
+        # else:
+        #     st.write("Camera is closed. Click 'Open Camera' to start.")
+                pass
     with col2:
         st.markdown("""
             <div style='text-align: center; font-weight: bold; font-size: 20px;'>Upload Image (ছবি আপলোড করুন)</div>
