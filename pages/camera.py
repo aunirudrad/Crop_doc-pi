@@ -4,7 +4,7 @@ from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
 import numpy as np
 import cv2
 from PIL import Image
-from picamera import PiCamera
+from picamera2 import PiCamera2
 from time import sleep
 
 class VideoTransformer(VideoTransformerBase):
@@ -24,7 +24,7 @@ def camera_page(navigate):
     st.write(f"<div class='title'>{st.session_state.get('crop', 'Camera')}</div>", unsafe_allow_html=True)
     st.write("<div class='sub-title'>Capture or Upload Image</div>", unsafe_allow_html=True)
     st.write("<div class='sub-title'>(ছবি তুলুন বা একটি ছবি আপলোড করুন)</div>", unsafe_allow_html=True)
-    camera = PiCamera()
+    camera = PiCamera2()
     
     sleep(2)
     col1, col2 = st.columns(2)
