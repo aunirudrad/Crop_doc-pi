@@ -4,6 +4,7 @@ import tensorflow as tf
 import numpy as np
 import streamlit as st
 import gdown
+import os
 
 # Define the file IDs for each model
 file_ids = {
@@ -20,11 +21,15 @@ model_paths = {
     'potato': 'potato_model.tflite'
 }
 
-# Download each file
+# Download the files only if they don't already exist
 for key in model_paths:
-    url = f"https://drive.google.com/uc?id={file_ids[key]}"
     output = model_paths[key]
-    gdown.download(url, output, quiet=False)
+    if not os.path.exists(output):  # Check if the file already exists
+        url = f"https://drive.google.com/uc?id={file_ids[key]}"
+        print(f"Downloading {output}...")
+        gdown.download(url, output, quiet=False)
+    else:
+        print(f"{output} already exists, skipping download.")
 
 interpreters = {}
 for crop, path in model_paths.items():
