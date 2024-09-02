@@ -8,7 +8,7 @@ from time import sleep
 from picamera2 import Picamera2, Preview
 
 
-def camera_page(navigate, picam2):
+def camera_page(navigate):
     st.write(f"<div class='title'>{st.session_state.get('crop', 'Camera')}</div>", unsafe_allow_html=True)
     st.write("<div class='sub-title'>Capture or Upload Image</div>", unsafe_allow_html=True)
     st.write("<div class='sub-title'>(ছবি তুলুন বা একটি ছবি আপলোড করুন)</div>", unsafe_allow_html=True)
@@ -34,16 +34,23 @@ def camera_page(navigate, picam2):
         
         # Button to open/close the camera
         if st.button("Open Camera", key="open_camera"):
-            picam2.start_preview(Preview.QTGL)
-            sleep(100)
+            # Open the camera only once
+            if not st.session_state.camera_open:
+                picam2 = Picamera2()
+                picam2.start_preview(Preview.QTGL)
+                st.session_state.picam2 = picam2
+                st.session_state.camera_open = True
+                sleep(5)  # Provide a delay to adjust the camera
             
-            # Button to capture the image
-            if st.button("Capture Image", key="capture_image"):
-
-                capture_image = picam2.capture_image()
+        # Button to capture the image
+        if st.button("Capture Image", key="capture_image"):
+            if st.session_state.camera_open:
+                capture_image = st.session_state.picam2.capture_image()
+                st.session_state.captured_image = capture_image
                 st.image(capture_image, caption="Image captured")
-                picam2.stop_preview()
-                picam2.close()
+                st.session_state.picam2.stop_preview()
+                st.session_state.picam2.close()
+                st.session_state.camera_open = False
                 
     
     

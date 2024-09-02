@@ -14,9 +14,8 @@ from pages.home import home_page
 from pages.camera import camera_page
 from pages.detection import detection_page
 from utils.styles import set_styles
-from picamera2 import Picamera2, Preview
 
-picam2 = Picamera2()
+
 # Apply custom styles
 st.markdown(set_styles(), unsafe_allow_html=True)
 
@@ -33,6 +32,6 @@ if st.session_state.current_page == "intro":
 elif st.session_state.current_page == "home":
     home_page(navigate)
 elif st.session_state.current_page == "camera":
-    camera_page(navigate, picam2)
+    camera_page(navigate)
 elif st.session_state.current_page == "detection":
     detection_page(navigate)
