@@ -48,7 +48,7 @@ def camera_page(navigate):
     # Initialize session state variables
     if "camera_open" not in st.session_state:
         st.session_state.camera_open = False
-    if "picam2" not in st.session_state:
+    if "picam" not in st.session_state:
         st.session_state.picam = None
     if "captured_image" not in st.session_state:
         st.session_state.captured_image = None
@@ -64,7 +64,7 @@ def camera_page(navigate):
             if not st.session_state.camera_open:
                 st.session_state.picam = initialize_camera()
                 if st.session_state.picam is not None:
-                    camera_started = start_camera(st.session_state.picam2)
+                    camera_started = start_camera(st.session_state.picam)
                     if camera_started:
                         st.session_state.camera_open = True
 
