@@ -23,13 +23,15 @@ def camera_page(navigate):
         if st.button("Open Camera"):
             try:
                 picam2 = Picamera2()
-                picam2.start_preview(Preview.QTGL)
-                sleep(5)  # Allow some time for the camera to initialize
-                captured_image = picam2.capture_array()
+                picam2.start_preview()
+                sleep(2)  # Allow some time for the camera to initialize
+                picam2.capture_file("/home/pi/Desktop/new_image.jpg")
+                st.image("/home/pi/Desktop/new_image.jpg", caption="Captured Image", use_column_width=True)
                 picam2.close()
-                st.image(captured_image, caption="Captured Image", use_column_width=True)
             except RuntimeError as e:
                 st.error(f"Error initializing camera: {e}")
+            except Exception as e:
+                st.error(f"Unexpected error: {e}")
 
     with col2:
         st.markdown("### Upload Image")
