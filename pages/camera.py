@@ -1,7 +1,7 @@
 import streamlit as st
 from PIL import Image
 from time import sleep
-from picamera2 import Picamera2
+from picamera2 import Picamera2, Preview
 
 
 def camera_page(navigate):
@@ -21,10 +21,15 @@ def camera_page(navigate):
 
         # Button to open/initialize the camera
         if st.button("Open Camera"):
-            picam2 = Picamera2()
-            captured_image = picam2.start_and_capture_file("Desktop/new_image.jpg")
-            picam2.close()
-            st.image(captured_image, caption="Captured Image", use_column_width=True)
+            try:
+                picam2 = Picamera2()
+                picam2.start_preview(Preview.QTGL)
+                sleep(5)  # Allow some time for the camera to initialize
+                captured_image = picam2.capture_array()
+                picam2.close()
+                st.image(captured_image, caption="Captured Image", use_column_width=True)
+            except RuntimeError as e:
+                st.error(f"Error initializing camera: {e}")
 
     with col2:
         st.markdown("### Upload Image")
