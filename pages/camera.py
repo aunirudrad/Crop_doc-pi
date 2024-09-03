@@ -1,44 +1,50 @@
 import streamlit as st
 from PIL import Image
 from time import sleep
-from picamera import Picamera
+from picamera2 import Picamera2
 
 def initialize_camera():
     """Initialize and configure the camera."""
     try:
-        picam = Picamera()
-        still_config = picam.create_still_configuration()  # Configure for still images
-        picam.configure(still_config)
-        return picam
+        picam2 = Picamera2()
+        still_config = picam2.create_still_configuration()  # Configure for still images
+        picam2.configure(still_config)
+        return picam2
     except RuntimeError as e:
         st.error(f"Failed to initialize the camera: {e}")
         return None
 
-def start_camera(picam):
+def start_camera(picam2):
     """Start the camera preview."""
     try:
-        picam.start()  # Start the camera
+        picam2.start()  # Start the camera
         sleep(2)  # Give some time for the camera to initialize
         return True
-    except Exception as e:
+    except RuntimeError as e:
         st.error(f"Error starting the camera: {e}")
         return False
 
-def capture_image(picam):
+def capture_image(picam2):
     """Capture an image from the camera."""
     try:
-        image_array = picam.capture_array()  # Capture the image as an array
+        # Check if the camera is started
+        if not picam2.is_started:
+            st.error("Camera is not started.")
+            return None
+
+        image_array = picam2.capture_array()  # Capture the image as an array
         captured_image = Image.fromarray(image_array)
         return captured_image
     except Exception as e:
         st.error(f"Error capturing image: {e}")
         return None
 
-def stop_camera(picam):
+def stop_camera(picam2):
     """Stop the camera and release resources."""
     try:
-        picam.stop()
-        picam.close()
+        if picam2.is_started:
+            picam2.stop()
+        picam2.close()
     except Exception as e:
         st.error(f"Error stopping the camera: {e}")
 
@@ -48,8 +54,8 @@ def camera_page(navigate):
     # Initialize session state variables
     if "camera_open" not in st.session_state:
         st.session_state.camera_open = False
-    if "picam" not in st.session_state:
-        st.session_state.picam = None
+    if "picam2" not in st.session_state:
+        st.session_state.picam2 = None
     if "captured_image" not in st.session_state:
         st.session_state.captured_image = None
 
@@ -62,17 +68,19 @@ def camera_page(navigate):
         # Button to open/initialize the camera
         if st.button("Open Camera"):
             if not st.session_state.camera_open:
-                st.session_state.picam = initialize_camera()
-                if st.session_state.picam is not None:
-                    camera_started = start_camera(st.session_state.picam)
+                st.session_state.picam2 = initialize_camera()
+                if st.session_state.picam2 is not None:
+                    camera_started = start_camera(st.session_state.picam2)
                     if camera_started:
                         st.session_state.camera_open = True
+                    else:
+                        st.session_state.picam2 = None
 
         # Button to capture the image
         if st.session_state.camera_open:
             if st.button("Capture Image"):
-                if st.session_state.picam:
-                    captured_image = capture_image(st.session_state.picam)
+                if st.session_state.picam2:
+                    captured_image = capture_image(st.session_state.picam2)
                     if captured_image:
                         st.session_state.captured_image = captured_image
                         st.image(captured_image, caption="Captured Image", use_column_width=True)
@@ -80,7 +88,7 @@ def camera_page(navigate):
         # Button to close the camera
         if st.session_state.camera_open:
             if st.button("Close Camera"):
-                stop_camera(st.session_state.picam)
+                stop_camera(st.session_state.picam2)
                 st.session_state.camera_open = False
 
     with col2:
@@ -99,5 +107,5 @@ def camera_page(navigate):
             else:
                 st.write("No image captured or uploaded to process!")
 
-# # Example of calling the camera_page function
+# Example of calling the camera_page function
 # camera_page(navigate=lambda x: st.write(f"Navigation placeholder: {x}"))
