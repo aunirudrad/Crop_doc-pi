@@ -4,6 +4,20 @@ from time import sleep
 from picamera2 import Picamera2, Preview
 
 
+def test_camera():
+
+    try:
+        picam2 = Picamera2()
+        picam2.start_preview()
+        sleep(2)  # Allow some time for the camera to initialize
+        picam2.capture_file("/home/pi/Desktop/new_image.jpg")
+        st.image("/home/pi/Desktop/new_image.jpg", caption="Captured Image", use_column_width=True)
+        picam2.close()
+    except RuntimeError as e:
+        st.error(f"Error initializing camera: {e}")
+    except Exception as e:
+        st.error(f"Unexpected error: {e}")
+
 def camera_page(navigate):
     st.title("Camera Page")
 
@@ -21,17 +35,7 @@ def camera_page(navigate):
 
         # Button to open/initialize the camera
         if st.button("Open Camera"):
-            try:
-                picam2 = Picamera2()
-                picam2.start_preview()
-                sleep(2)  # Allow some time for the camera to initialize
-                picam2.capture_file("/home/pi/Desktop/new_image.jpg")
-                st.image("/home/pi/Desktop/new_image.jpg", caption="Captured Image", use_column_width=True)
-                picam2.close()
-            except RuntimeError as e:
-                st.error(f"Error initializing camera: {e}")
-            except Exception as e:
-                st.error(f"Unexpected error: {e}")
+            test_camera()
 
     with col2:
         st.markdown("### Upload Image")
